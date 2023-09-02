@@ -3,6 +3,7 @@
     "zod": "https://deno.land/x/zod@v3.22.2/mod.ts",
     "oak": "https://deno.land/x/oak@v12.6.0/mod.ts",
     "path": "https://deno.land/std@0.201.0/path/mod.ts",
-    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts"
+    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
+    "oak_sessions": "https://deno.land/x/oak_sessions@v4.1.9/mod.ts"
   }
 }

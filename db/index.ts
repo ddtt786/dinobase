@@ -14,6 +14,7 @@ async function setVariable(name: string, value: Deno.KvKeyPart) {
 
 async function init(account: CreateAccount): Promise<string | undefined> {
   if (await getVariable("init")) return;
+
   await setVariable("init", true);
 
   await createNote("account", {
