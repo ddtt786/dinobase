@@ -1,9 +1,9 @@
 type FileSelector = ["storage", string];
 
-interface File {
+interface StorageFile {
   name: string;
   ext: string;
   path: string;
 }
 
-export type { FileSelector, File };
+export type { FileSelector, StorageFile };

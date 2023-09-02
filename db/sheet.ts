@@ -27,6 +27,10 @@ async function createSheet(note: string, sheet: Sheet): Promise<string> {
 
   for (const key in sheet) {
     const element = sheet[key];
+    if (element === undefined) {
+      delete sheet[key];
+      continue;
+    }
     atom = atom.set(
       <SearchIndex>["search_index", note, key, element, uuid],
       uuid
