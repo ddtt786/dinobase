@@ -7,7 +7,7 @@ import { ValidateError } from "../errors/validate.ts";
 import { Column, ColumnType } from "../model/column.ts";
 import { Role } from "../model/rule.ts";
 import { Sheet } from "../model/sheet.ts";
-import { boolean, z } from "zod";
+import { z } from "zod";
 
 type ActionType = "create" | "update" | "read" | "delete";
 
@@ -63,6 +63,7 @@ async function validateNote(expl: Expl, columns?: { [key: string]: Column }) {
         code: "conflict",
       });
     }
+    // deno-lint-ignore no-unused-vars
     const data = columns ? columns[key] : target[key];
     if ((expl.action == "delete" || expl.action == "update") && !columns[key])
       continue;

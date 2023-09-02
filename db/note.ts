@@ -1,11 +1,9 @@
-import { object } from "https://deno.land/x/zod@v3.22.2/types.ts";
 import { NoteAlreadyExistError, NoteNotFoundError } from "../errors/note.ts";
 import { Column, ColumnListSelector, ColumnSelector } from "../model/column.ts";
 import { Note, NoteSelector } from "../model/note.ts";
 import { CURDRule, RuleSelector } from "../model/rule.ts";
 import { Sheet, SheetListSelector } from "../model/sheet.ts";
 import { kv } from "./kv.ts";
-import { SearchIndexListSelector } from "../model/search.ts";
 
 async function createNote(
   name: string,
