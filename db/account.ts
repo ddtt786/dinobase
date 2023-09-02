@@ -63,5 +63,12 @@ async function authSignIn(
   }
 }
 
+async function IsAdmin(uuid: string): Promise<boolean> {
+  /** @ts-ignore */
+  const account: Account = await getSheet("account", uuid);
+
+  return account.role == "admin";
+}
+
 export type { CreateAccount };
-export { createAccount, auth, authSignIn };
+export { createAccount, auth, authSignIn, IsAdmin };
