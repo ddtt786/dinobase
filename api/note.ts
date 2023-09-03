@@ -6,6 +6,7 @@ import {
   createNote,
   getColumns,
   getNoteInfo,
+  getNoteList,
   getNoteRule,
 } from "../db/note.ts";
 import { Session } from "oak_sessions";
@@ -193,4 +194,28 @@ async function GetNoteInfo(
   }
 }
 
-export { CreateNote, GetNoteInfo, ChangeNoteData };
+async function GetNoteList(ctx: Context) {
+  const role = <Role>await (<Session>ctx.state.session).get("role");
+  try {
+    if (role != "admin") {
+      throw new ValidateError({
+        code: "forbidden",
+      });
+    }
+    ctx.response.body = await getNoteList();
+  } catch (error) {
+    ctx.response.status = 400;
+    if (error instanceof ValidateError) {
+      ctx.response.body = error.data;
+      if (error.data.code == "forbidden") {
+        ctx.response.status = 403;
+      }
+      return;
+    }
+    console.error(error);
+    ctx.response.status = 500;
+    return;
+  }
+}
+
+export { CreateNote, GetNoteInfo, ChangeNoteData, GetNoteList };

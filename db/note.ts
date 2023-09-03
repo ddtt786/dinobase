@@ -119,6 +119,15 @@ async function getNoteInfo(name: string): Promise<Note> {
   return <Note>info.value;
 }
 
+async function getNoteList(): Promise<Note[]> {
+  const list = kv.list({ prefix: ["note"] });
+  const res: Note[] = [];
+  for await (const { value } of list) {
+    res.push(<Note>value);
+  }
+  return res;
+}
+
 async function getNoteRule(name: string): Promise<CURDRule | undefined> {
   const rule = await kv.get(<RuleSelector>["rule", name]);
   return <CURDRule>rule.value;
@@ -159,4 +168,5 @@ export {
   deleteNote,
   changeNote,
   removeNoteColumn,
+  getNoteList,
 };
