@@ -2,6 +2,7 @@ import z from "https://deno.land/x/zod@v3.22.2/index.ts";
 import { Context, RouteParams } from "oak";
 import { IsAdmin } from "../db/account.ts";
 import {
+  changeNote,
   createNote,
   getColumns,
   getNoteInfo,
@@ -51,13 +52,10 @@ type NoteData = z.infer<typeof NoteData>;
 async function CreateNote(ctx: Context) {
   const body: NoteData = await ctx.request.body({ type: "json" }).value;
 
-  const role = <Role>await (<Session>ctx.state.session).get("role");
+  const role: Role =
+    <Role>await (<Session>ctx.state.session).get("role") ?? "guest";
 
   const uuid = await (<Session>ctx.state.session).get("user_uuid");
-  if (!uuid) {
-    ctx.response.status = 403;
-    return;
-  }
 
   try {
     NoteData.parse(body);
@@ -73,6 +71,75 @@ async function CreateNote(ctx: Context) {
     );
     /**@ts-ignore */
     await createNote(body.name, body.columns, body.rule);
+    ctx.response.status = 200;
+  } catch (error) {
+    ctx.response.status = 400;
+    if (error instanceof ZodError) {
+      ctx.response.body = error;
+      return;
+    }
+    if (error instanceof ValidateError) {
+      ctx.response.body = error.data;
+      if (error.data.code == "forbidden") {
+        ctx.response.status = 403;
+      }
+      return;
+    }
+    console.error(error);
+    ctx.response.status = 500;
+    return;
+  }
+}
+
+const NewNoteData = z.object({
+  columns: z.record(
+    z.string(),
+    z.object({
+      type: z.string(),
+      relation: z.array(z.string()).max(2).optional(),
+      unique: z.boolean().optional(),
+      min: z.number().optional(),
+      max: z.number().optional(),
+      lock: z.boolean().optional(),
+      optional: z.boolean().optional(),
+    })
+  ),
+  rule: z
+    .object({
+      create_rule: rule,
+      update_rule: rule,
+      read_rule: rule,
+      delete_rule: rule,
+    })
+    .optional(),
+});
+
+type NewNoteData = z.infer<typeof NewNoteData>;
+
+async function ChangeNoteData(
+  ctx: Context & { params: { [key: string]: string } }
+) {
+  const body: NewNoteData = await ctx.request.body({ type: "json" }).value;
+
+  const role: Role =
+    <Role>await (<Session>ctx.state.session).get("role") ?? "guest";
+
+  const uuid = await (<Session>ctx.state.session).get("user_uuid");
+
+  try {
+    NewNoteData.parse(body);
+    await validateNote(
+      {
+        user: <string>uuid,
+        note: ctx.params.name,
+        role: <Role>role,
+        action: "update",
+      },
+      /**@ts-ignore */
+      body.columns
+    );
+    /**@ts-ignore */
+    await changeNote(ctx.params.name, body.columns, body.rule);
     ctx.response.status = 200;
   } catch (error) {
     ctx.response.status = 400;
@@ -126,4 +193,4 @@ async function GetNoteInfo(
   }
 }
 
-export { CreateNote, GetNoteInfo };
+export { CreateNote, GetNoteInfo, ChangeNoteData };
