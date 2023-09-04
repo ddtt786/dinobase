@@ -67,4 +67,9 @@ async function SignIn(ctx: Context) {
   }
 }
 
-export { SignUp, SignIn };
+async function Logout(ctx: Context) {
+  await (<Session>ctx.state.session).deleteSession();
+  ctx.response.status = 200;
+}
+
+export { SignUp, SignIn, Logout };

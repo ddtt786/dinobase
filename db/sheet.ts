@@ -75,6 +75,12 @@ async function changeSheetData(note: string, uuid: string, sheet: Sheet) {
   }
 }
 
+async function deleteSheet(note: string, uuid: string) {
+  if (!NoteExist(note)) throw new NoteNotFoundError(note);
+
+  await kv.delete(<SheetSelector>["sheet", note, uuid]);
+}
+
 async function getSheet(note: string, uuid: string): Promise<Sheet> {
   if (!NoteExist(note)) throw new NoteNotFoundError(note);
 
@@ -204,4 +210,11 @@ async function search(
   return { data: res };
 }
 
-export { createSheet, getSheet, isUnique, search, changeSheetData };
+export {
+  createSheet,
+  getSheet,
+  isUnique,
+  search,
+  changeSheetData,
+  deleteSheet,
+};
