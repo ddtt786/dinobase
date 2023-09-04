@@ -4,6 +4,7 @@ import { IsAdmin } from "../db/account.ts";
 import {
   changeNote,
   createNote,
+  deleteNote,
   getColumns,
   getNoteInfo,
   getNoteList,
@@ -164,7 +165,8 @@ async function ChangeNoteData(
 async function GetNoteInfo(
   ctx: Context & { params: { [key: string]: string } }
 ) {
-  const role = <Role>await (<Session>ctx.state.session).get("role");
+  const role: Role =
+    <Role>await (<Session>ctx.state.session).get("role") ?? "guest";
   try {
     await validateNote({
       role: role,
@@ -186,6 +188,38 @@ async function GetNoteInfo(
     }
     if (error instanceof NoteNotFoundError) {
       ctx.response.status = 404;
+      return;
+    }
+    console.error(error);
+    ctx.response.status = 500;
+    return;
+  }
+}
+
+async function DeleteNote(
+  ctx: Context & { params: { [key: string]: string } }
+) {
+  const role: Role =
+    <Role>await (<Session>ctx.state.session).get("role") ?? "guest";
+
+  const uuid = await (<Session>ctx.state.session).get("user_uuid");
+
+  try {
+    await validateNote({
+      user: <string>uuid,
+      note: ctx.params.name,
+      role: <Role>role,
+      action: "delete",
+    });
+    await deleteNote(ctx.params.name);
+    ctx.response.status = 200;
+  } catch (error) {
+    ctx.response.status = 400;
+    if (error instanceof ValidateError) {
+      ctx.response.body = error.data;
+      if (error.data.code == "forbidden") {
+        ctx.response.status = 403;
+      }
       return;
     }
     console.error(error);
@@ -218,4 +252,4 @@ async function GetNoteList(ctx: Context) {
   }
 }
 
-export { CreateNote, GetNoteInfo, ChangeNoteData, GetNoteList };
+export { CreateNote, GetNoteInfo, ChangeNoteData, GetNoteList, DeleteNote };

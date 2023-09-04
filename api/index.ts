@@ -4,6 +4,7 @@ import { SignIn, SignUp } from "./account.ts";
 import {
   ChangeNoteData,
   CreateNote,
+  DeleteNote,
   GetNoteInfo,
   GetNoteList,
 } from "./note.ts";
@@ -18,8 +19,9 @@ api.post("/signin", SignIn);
 api.post("/createnote", CreateNote);
 api.get("/notelist", GetNoteList);
 api.get("/note/:name", GetNoteInfo);
-api.post("/createsheet/:name", CreateSheet);
+api.delete("/note/:name", DeleteNote);
 api.patch("/note/:name", ChangeNoteData);
+api.post("/createsheet/:name", CreateSheet);
 api.get("/sheet/:note/:uuid", GetSheetData);
 api.patch("/sheet/:note/:uuid", ChangeSheetData);
 api.get("/search/:note/:column", Search);

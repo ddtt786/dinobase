@@ -58,7 +58,7 @@ async function validateNote(expl: Expl, columns?: { [key: string]: Column }) {
 
   for (const key in columns) {
     const { type, relation } = columns[key];
-    if (expl.action == "update" && target[key]) {
+    if (expl.action == "update" && target[key].type != type) {
       throw new ValidateError({
         code: "conflict",
       });
@@ -188,7 +188,7 @@ async function validateSheet(expl: Expl, sheet?: Sheet) {
       unique &&
       (await search(expl.note, key, { value: <string>data })).data.length !=
         0 &&
-      expl.action == "create"
+      (expl.action == "create" || expl.action == "update")
     ) {
       throw new ValidateError({
         key,
