@@ -5,11 +5,12 @@ import { Session } from "oak_sessions";
 import { validateSheet } from "../lib/validation.ts";
 import { ZodError } from "https://deno.land/x/zod@v3.22.2/ZodError.ts";
 import { ValidateError } from "../errors/validate.ts";
-import { changeSheetData, createSheet, getSheet } from "../db/sheet.ts";
+import { changeSheetData, createSheet, getSheet, search } from "../db/sheet.ts";
 import { NoteNotFoundError } from "../errors/note.ts";
 import { NoRequiredFieldsError } from "../errors/index.ts";
 import { object } from "https://deno.land/x/zod@v3.22.2/types.ts";
 import { SheetNotFoundError } from "../errors/sheet.ts";
+import { getNoteRule } from "../db/note.ts";
 
 const InsertSheet = z.record(
   z.string(),
@@ -158,4 +159,61 @@ async function ChangeSheetData(
   }
 }
 
-export { CreateSheet, GetSheetData, ChangeSheetData };
+async function Search(ctx: Context & { params: { [key: string]: string } }) {
+  const value = ctx.request.url.searchParams.get("value") ?? undefined;
+  const min = ctx.request.url.searchParams.get("min") ?? undefined;
+  const max = ctx.request.url.searchParams.get("max") ?? undefined;
+  const cursor = ctx.request.url.searchParams.get("cursor") ?? undefined;
+  const limit = ctx.request.url.searchParams.get("limit") ?? undefined;
+
+  try {
+    const rules = await getNoteRule(ctx.params.note);
+    if (rules?.read_rule?.auth == true) {
+      throw new ValidateError({
+        code: "forbidden",
+      });
+    }
+
+    if (limit !== undefined) {
+      if (Number(limit) <= 0) {
+        throw new ValidateError({
+          code: "too_small",
+          expected: 1,
+          received: Number(limit),
+        });
+      } else if (isNaN(Number(limit))) {
+        throw new ValidateError({
+          code: "invalid_type",
+          expected: "number",
+          received: "NaN",
+        });
+      }
+    }
+    ctx.response.body = await search(ctx.params.note, ctx.params.column, {
+      value,
+      min,
+      max,
+      cursor,
+      limit: limit ? Number(limit) : undefined,
+    });
+    ctx.response.status = 200;
+  } catch (error) {
+    ctx.response.status = 400;
+    if (error instanceof NoteNotFoundError) {
+      ctx.response.body = error;
+      return;
+    }
+    if (error instanceof ValidateError) {
+      ctx.response.body = Object.assign(error.data);
+      if (error.data.code == "forbidden") {
+        ctx.response.status = 403;
+      }
+      return;
+    }
+    console.log(error);
+    ctx.response.status = 500;
+    return;
+  }
+}
+
+export { CreateSheet, GetSheetData, ChangeSheetData, Search };

@@ -7,7 +7,7 @@ import {
   GetNoteInfo,
   GetNoteList,
 } from "./note.ts";
-import { ChangeSheetData, CreateSheet, GetSheetData } from "./sheet.ts";
+import { ChangeSheetData, CreateSheet, GetSheetData, Search } from "./sheet.ts";
 
 const api = new Router();
 
@@ -22,5 +22,6 @@ api.post("/createsheet/:name", CreateSheet);
 api.patch("/note/:name", ChangeNoteData);
 api.get("/sheet/:note/:uuid", GetSheetData);
 api.patch("/sheet/:note/:uuid", ChangeSheetData);
+api.get("/search/:note/:column", Search);
 
 export default api;
