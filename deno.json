@@ -38,7 +38,8 @@
     "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
     "zod": "https://deno.land/x/zod@v3.22.2/mod.ts",
     "dinobase": "https://esm.sh/dinobase@0.4.0",
-    "fresh_session": "https://deno.land/x/fresh_session@0.2.2/mod.ts"
+    "fresh_session": "https://deno.land/x/fresh_session@0.2.2/mod.ts",
+    "deepmerge": "https://deno.land/x/deepmergets@v5.1.0/dist/deno/index.ts"
   },
   "compilerOptions": {
     "jsx": "react-jsx",

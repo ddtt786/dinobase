@@ -27,7 +27,7 @@ const NewNoteData = z.object({
   columns: z.record(
     z.string(),
     z.object({
-      type: z.string(),
+      type: z.string().optional(),
       relation: z.array(z.string()).max(2).optional(),
       unique: z.boolean().optional(),
       min: z.number().optional(),

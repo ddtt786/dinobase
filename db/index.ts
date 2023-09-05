@@ -38,10 +38,10 @@ async function init(account: CreateAccount): Promise<string | undefined> {
   });
 
   await createNote("storage", {
-    name: { type: "string", unique: true },
+    name: { type: "string" },
     ext: { type: "string" },
-    path: { type: "string" },
-    owner: { type: "string", relation: ["account"] },
+    path: { type: "string", unique: true },
+    owner: { type: "string", relation: ["account"], optional: true },
     created_at: { type: "timestamp" },
   }, {
     create_rule: {

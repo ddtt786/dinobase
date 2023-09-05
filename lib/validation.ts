@@ -58,7 +58,9 @@ async function validateNote(expl: Expl, columns?: Columns) {
 
   for (const key in columns) {
     const { type, relation } = columns[key];
-    if (expl.action == "update" && target[key].type != type) {
+    if (
+      expl.action == "update" && type && target[key].type != type
+    ) {
       throw new ValidateError({
         code: "conflict",
       });
@@ -176,6 +178,7 @@ async function validateSheet(expl: Expl, sheet?: Sheet) {
     if ((expl.action == "read" || expl.action == "delete") && type != "auth") {
       continue;
     }
+
     if (optional && !data) continue;
     if (expl.action == "update" && !data) continue;
     if (!optional && !data && type != "timestamp") {

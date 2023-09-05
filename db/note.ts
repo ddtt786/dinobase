@@ -9,6 +9,7 @@ import { Note, NoteSelector } from "@/model/note.ts";
 import { CRUDRule, RuleSelector } from "@/model/rule.ts";
 import { Sheet, SheetListSelector } from "@/model/sheet.ts";
 import { kv } from "@/db/kv.ts";
+import { deepmerge } from "deepmerge";
 
 async function createNote(
   name: string,
@@ -50,7 +51,7 @@ async function changeNote(
     if (oldRules) {
       await kv.set(
         ["rule", name] as RuleSelector,
-        Object.assign(oldRules, rules),
+        deepmerge(oldRules, rules),
       );
     } else {
       await kv.set(["rule", name] as RuleSelector, rules);

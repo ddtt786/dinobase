@@ -8,6 +8,7 @@ import {
 import { Sheet, SheetSelector } from "@/model/sheet.ts";
 import { kv } from "@/db/kv.ts";
 import { ColumnExist, getColumns, NoteExist } from "@/db/note.ts";
+import { deepmerge } from "deepmerge";
 
 async function createSheet(note: string, sheet: Sheet): Promise<string> {
   if (!NoteExist(note)) throw new NoteNotFoundError(note);
@@ -58,7 +59,7 @@ async function changeSheetData(note: string, uuid: string, sheet: Sheet) {
   }
   atom = atom.set(
     ["sheet", note, uuid] as SheetSelector,
-    Object.assign(await getSheet(note, uuid), sheet),
+    deepmerge(await getSheet(note, uuid), sheet),
   );
 
   for (const key in sheet) {

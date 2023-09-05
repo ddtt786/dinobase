@@ -15,9 +15,10 @@ import * as $9 from "./routes/api/sheet/[note]/[uuid].ts";
 import * as $10 from "./routes/api/sheet/[note]/index.ts";
 import * as $11 from "./routes/api/signin.ts";
 import * as $12 from "./routes/api/signup.ts";
-import * as $13 from "./routes/api/upload.ts";
-import * as $14 from "./routes/greet/[name].tsx";
-import * as $15 from "./routes/index.tsx";
+import * as $13 from "./routes/api/storage/[name].ts";
+import * as $14 from "./routes/api/upload.ts";
+import * as $15 from "./routes/greet/[name].tsx";
+import * as $16 from "./routes/index.tsx";
 import * as $$0 from "./islands/Counter.tsx";
 
 const manifest = {
@@ -35,9 +36,10 @@ const manifest = {
     "./routes/api/sheet/[note]/index.ts": $10,
     "./routes/api/signin.ts": $11,
     "./routes/api/signup.ts": $12,
-    "./routes/api/upload.ts": $13,
-    "./routes/greet/[name].tsx": $14,
-    "./routes/index.tsx": $15,
+    "./routes/api/storage/[name].ts": $13,
+    "./routes/api/upload.ts": $14,
+    "./routes/greet/[name].tsx": $15,
+    "./routes/index.tsx": $16,
   },
   islands: {
     "./islands/Counter.tsx": $$0,
