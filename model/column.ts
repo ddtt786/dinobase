@@ -19,4 +19,8 @@ interface Column {
   optional?: boolean;
 }
 
-export type { ColumnSelector, ColumnListSelector, Column, ColumnType };
+interface Columns {
+  [key: string]: Column;
+}
+
+export type { Column, ColumnListSelector, Columns, ColumnSelector, ColumnType };

@@ -7,11 +7,11 @@ interface Rule {
   auth?: boolean;
 }
 
-interface CURDRule {
+interface CRUDRule {
   create_rule?: Rule;
-  update_rule?: Rule;
   read_rule?: Rule;
+  update_rule?: Rule;
   delete_rule?: Rule;
 }
 
-export type { RuleSelector, Role, Rule, CURDRule };
+export type { CRUDRule, Role, Rule, RuleSelector };

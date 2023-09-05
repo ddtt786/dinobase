@@ -1,14 +1,13 @@
-import { ColumnNotFoundError, NoteNotFoundError } from "../errors/note.ts";
-import { SheetCreationError, SheetNotFoundError } from "../errors/sheet.ts";
-import { NoteSelector } from "../model/note.ts";
+import { ColumnNotFoundError, NoteNotFoundError } from "@/errors/note.ts";
+import { SheetCreationError, SheetNotFoundError } from "@/errors/sheet.ts";
 import {
   SearchIndex,
   SearchIndexListSelector,
   SearchOptions,
-} from "../model/search.ts";
-import { Sheet, SheetSelector } from "../model/sheet.ts";
-import { kv } from "./kv.ts";
-import { ColumnExist, NoteExist, getColumns } from "./note.ts";
+} from "@/model/search.ts";
+import { Sheet, SheetSelector } from "@/model/sheet.ts";
+import { kv } from "@/db/kv.ts";
+import { ColumnExist, getColumns, NoteExist } from "@/db/note.ts";
 
 async function createSheet(note: string, sheet: Sheet): Promise<string> {
   if (!NoteExist(note)) throw new NoteNotFoundError(note);
@@ -23,7 +22,7 @@ async function createSheet(note: string, sheet: Sheet): Promise<string> {
       sheet[key] = Date.now();
     }
   }
-  atom = atom.set(<SheetSelector>["sheet", note, uuid], sheet);
+  atom = atom.set(["sheet", note, uuid] as SheetSelector, sheet);
 
   for (const key in sheet) {
     const element = sheet[key];
@@ -32,8 +31,8 @@ async function createSheet(note: string, sheet: Sheet): Promise<string> {
       continue;
     }
     atom = atom.set(
-      <SearchIndex>["search_index", note, key, element, uuid],
-      uuid
+      ["search_index", note, key, element, uuid] as SearchIndex,
+      uuid,
     );
   }
 
@@ -58,15 +57,15 @@ async function changeSheetData(note: string, uuid: string, sheet: Sheet) {
     }
   }
   atom = atom.set(
-    <SheetSelector>["sheet", note, uuid],
-    Object.assign(await getSheet(note, uuid), sheet)
+    ["sheet", note, uuid] as SheetSelector,
+    Object.assign(await getSheet(note, uuid), sheet),
   );
 
   for (const key in sheet) {
     const element = sheet[key];
     atom = atom.set(
-      <SearchIndex>["search_index", note, key, element, uuid],
-      uuid
+      ["search_index", note, key, element, uuid] as SearchIndex,
+      uuid,
     );
   }
 
@@ -78,28 +77,28 @@ async function changeSheetData(note: string, uuid: string, sheet: Sheet) {
 async function deleteSheet(note: string, uuid: string) {
   if (!NoteExist(note)) throw new NoteNotFoundError(note);
 
-  await kv.delete(<SheetSelector>["sheet", note, uuid]);
+  await kv.delete(["sheet", note, uuid] as SheetSelector);
 }
 
 async function getSheet(note: string, uuid: string): Promise<Sheet> {
   if (!NoteExist(note)) throw new NoteNotFoundError(note);
 
-  const sheet = await kv.get(<SheetSelector>["sheet", note, uuid]);
+  const sheet = await kv.get(["sheet", note, uuid] as SheetSelector);
 
   if (!sheet.versionstamp) {
     throw new SheetNotFoundError(uuid);
   }
 
-  return <Sheet>sheet.value;
+  return sheet.value as Sheet;
 }
 
 async function isUnique(
   note: string,
   column: string,
-  value: string
+  value: string,
 ): Promise<boolean> {
   const indexes = kv.list({
-    prefix: <SearchIndexListSelector>["search_index", note, column, value],
+    prefix: ["search_index", note, column, value] as SearchIndexListSelector,
   });
   for await (const _ of indexes) {
     return false;
@@ -110,7 +109,7 @@ async function isUnique(
 async function search(
   note: string,
   column: string,
-  options: SearchOptions
+  options: SearchOptions,
 ): Promise<{ data: string[]; cursor?: string }> {
   if (!(await ColumnExist(note, column))) {
     throw new ColumnNotFoundError(column);
@@ -119,12 +118,12 @@ async function search(
 
   if (options.value) {
     const list = kv.list<string>({
-      prefix: <SearchIndexListSelector>[
+      prefix: [
         "search_index",
         note,
         column,
         options.value,
-      ],
+      ] as SearchIndexListSelector,
     });
     for await (const { value } of list) {
       res.push(value);
@@ -142,7 +141,7 @@ async function search(
         limit: options.limit,
         cursor: options.cursor,
         reverse: true,
-      }
+      },
     );
 
     for await (const { value } of list) {
@@ -161,7 +160,7 @@ async function search(
         limit: options.limit,
         cursor: options.cursor,
         reverse: true,
-      }
+      },
     );
 
     for await (const { value } of list) {
@@ -180,7 +179,7 @@ async function search(
         limit: options.limit,
         cursor: options.cursor,
         reverse: true,
-      }
+      },
     );
 
     for await (const { value } of list) {
@@ -198,7 +197,7 @@ async function search(
         limit: options.limit,
         cursor: options.cursor,
         reverse: true,
-      }
+      },
     );
 
     for await (const { value } of list) {
@@ -211,10 +210,10 @@ async function search(
 }
 
 export {
+  changeSheetData,
   createSheet,
+  deleteSheet,
   getSheet,
   isUnique,
   search,
-  changeSheetData,
-  deleteSheet,
 };

@@ -1,4 +1,4 @@
-import { ColumnType } from "../model/column.ts";
+import { ColumnType } from "@/model/column.ts";
 
 type ValidationErrorCode =
   | "too_small"

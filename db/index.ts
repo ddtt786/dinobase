@@ -1,15 +1,14 @@
-import { VariableSelector } from "../model/index.ts";
-import { CreateAccount, createAccount } from "./account.ts";
-import { kv } from "./kv.ts";
-import { createNote } from "./note.ts";
-import { createSheet } from "./sheet.ts";
+import { VariableSelector } from "@/model/index.ts";
+import { CreateAccount, createAccount } from "@/db/account.ts";
+import { kv } from "@/db/kv.ts";
+import { createNote } from "@/db/note.ts";
 
 async function getVariable(name: string) {
-  return (await kv.get(<VariableSelector>["variable", name])).value;
+  return (await kv.get(["variable", name] as VariableSelector)).value;
 }
 
 async function setVariable(name: string, value: Deno.KvKeyPart) {
-  await kv.set(<VariableSelector>["variable", name], value);
+  await kv.set(["variable", name] as VariableSelector, value);
 }
 
 async function init(account: CreateAccount): Promise<string | undefined> {
@@ -23,6 +22,19 @@ async function init(account: CreateAccount): Promise<string | undefined> {
     profile_image: { type: "file", optional: true },
     role: { type: "string" },
     created_at: { type: "timestamp" },
+  }, {
+    create_rule: {
+      permission: "admin",
+    },
+    read_rule: {
+      permission: "admin",
+    },
+    update_rule: {
+      permission: "admin",
+    },
+    delete_rule: {
+      permission: "admin",
+    },
   });
 
   await createNote("storage", {
@@ -31,6 +43,16 @@ async function init(account: CreateAccount): Promise<string | undefined> {
     path: { type: "string" },
     owner: { type: "string", relation: ["account"] },
     created_at: { type: "timestamp" },
+  }, {
+    create_rule: {
+      permission: "admin",
+    },
+    update_rule: {
+      permission: "admin",
+    },
+    delete_rule: {
+      permission: "admin",
+    },
   });
 
   return await createAccount(account, "admin");

@@ -1,12 +1,12 @@
-import { NoteExist, getColumns, getNoteRule } from "../db/note.ts";
-import { getSheet, search } from "../db/sheet.ts";
-import { NoRequiredFieldsError } from "../errors/index.ts";
-import { ColumnNotFoundError, NoteNotFoundError } from "../errors/note.ts";
-import { SheetNotFoundError } from "../errors/sheet.ts";
-import { ValidateError } from "../errors/validate.ts";
-import { Column, ColumnType } from "../model/column.ts";
-import { Role } from "../model/rule.ts";
-import { Sheet } from "../model/sheet.ts";
+import { getColumns, getNoteRule, NoteExist } from "@/db/note.ts";
+import { getSheet, search } from "@/db/sheet.ts";
+import { NoRequiredFieldsError } from "@/errors/index.ts";
+import { ColumnNotFoundError, NoteNotFoundError } from "@/errors/note.ts";
+import { SheetNotFoundError } from "@/errors/sheet.ts";
+import { ValidateError } from "@/errors/validate.ts";
+import { Column, Columns, ColumnType } from "@/model/column.ts";
+import { Role } from "@/model/rule.ts";
+import { Sheet } from "@/model/sheet.ts";
 import { z } from "zod";
 
 type ActionType = "create" | "update" | "read" | "delete";
@@ -19,7 +19,7 @@ interface Expl {
   action: ActionType;
 }
 
-async function validateNote(expl: Expl, columns?: { [key: string]: Column }) {
+async function validateNote(expl: Expl, columns?: Columns) {
   if (expl.role != "admin") throw new ValidateError({ code: "forbidden" });
   if (await NoteExist(expl.note)) {
     if (expl.action == "read") return;
@@ -33,10 +33,10 @@ async function validateNote(expl: Expl, columns?: { [key: string]: Column }) {
   }
 
   const target = await (async function (): Promise<
-    { [key: string]: Column } | undefined
+    Columns | undefined
   > {
     if (expl.action == "create") {
-      return <{ [key: string]: Column }>columns;
+      return columns as Columns;
     }
     if (!expl.note) {
       throw new NoRequiredFieldsError(["note"]);
@@ -65,8 +65,9 @@ async function validateNote(expl: Expl, columns?: { [key: string]: Column }) {
     }
     // deno-lint-ignore no-unused-vars
     const data = columns ? columns[key] : target[key];
-    if ((expl.action == "delete" || expl.action == "update") && !columns[key])
+    if ((expl.action == "delete" || expl.action == "update") && !columns[key]) {
       continue;
+    }
     if (expl.action == "delete" && !target[key]) {
       throw new ColumnNotFoundError(key);
     }
@@ -158,13 +159,13 @@ async function validateSheet(expl: Expl, sheet?: Sheet) {
       throw new NoRequiredFieldsError(["target"]);
     }
     try {
-      return await getSheet(expl.note, <string>expl.target);
+      return await getSheet(expl.note, expl.target as string);
     } catch (_) {
       return;
     }
   })();
   if (!target) {
-    throw new SheetNotFoundError(expl.target ? <string>expl.target : "");
+    throw new SheetNotFoundError(expl.target ? expl.target as string : "");
   }
 
   const columns = await getColumns(expl.note);
@@ -172,12 +173,14 @@ async function validateSheet(expl: Expl, sheet?: Sheet) {
     const { type, relation, unique, min, max, lock, optional } = columns[key];
     const data = sheet ? sheet[key] : target[key];
 
-    if ((expl.action == "read" || expl.action == "delete") && type != "auth")
+    if ((expl.action == "read" || expl.action == "delete") && type != "auth") {
       continue;
+    }
     if (optional && !data) continue;
     if (expl.action == "update" && !data) continue;
-    if (!optional && !data && type != "timestamp")
+    if (!optional && !data && type != "timestamp") {
       throw new NoRequiredFieldsError([key]);
+    }
     if (lock && data) {
       throw new ValidateError({
         key,
@@ -186,7 +189,7 @@ async function validateSheet(expl: Expl, sheet?: Sheet) {
     }
     if (
       unique &&
-      (await search(expl.note, key, { value: <string>data })).data.length !=
+      (await search(expl.note, key, { value: data as string })).data.length !=
         0 &&
       (expl.action == "create" || expl.action == "update")
     ) {
@@ -212,7 +215,7 @@ async function validateSheet(expl: Expl, sheet?: Sheet) {
             key,
             code: "too_short",
             expected: min,
-            received: (<string>data).length,
+            received: (data as string).length,
           });
         }
 
@@ -221,7 +224,7 @@ async function validateSheet(expl: Expl, sheet?: Sheet) {
             key,
             code: "too_long",
             expected: max,
-            received: (<string>data).length,
+            received: (data as string).length,
           });
         }
         break;
@@ -239,7 +242,7 @@ async function validateSheet(expl: Expl, sheet?: Sheet) {
             key,
             code: "too_small",
             expected: min,
-            received: <number>data,
+            received: data as number,
           });
         }
 
@@ -248,7 +251,7 @@ async function validateSheet(expl: Expl, sheet?: Sheet) {
             key,
             code: "too_big",
             expected: max,
-            received: <number>data,
+            received: data as number,
           });
         }
         break;
@@ -304,7 +307,7 @@ async function validateSheet(expl: Expl, sheet?: Sheet) {
       if (relation[1]) {
         const related = (
           await search(relation[0], relation[1], {
-            value: <string>data,
+            value: data as string,
           })
         ).data;
         try {
@@ -321,7 +324,7 @@ async function validateSheet(expl: Expl, sheet?: Sheet) {
         }
       } else {
         try {
-          await getSheet(relation[0], <string>data);
+          await getSheet(relation[0], data as string);
         } catch (_) {
           throw new ValidateError({
             code: "relationship",
@@ -342,4 +345,4 @@ async function validateSheet(expl: Expl, sheet?: Sheet) {
 }
 
 export type { ActionType, Expl };
-export { validateSheet, validateNote };
+export { validateNote, validateSheet };

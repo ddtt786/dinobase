@@ -1,4 +1,4 @@
-import { AlreadyExistError, NotFoundError } from "./index.ts";
+import { AlreadyExistError, NotFoundError } from "@/errors/index.ts";
 
 class NoteNotFoundError extends NotFoundError {
   constructor(name: string) {
@@ -21,4 +21,4 @@ class NoteAlreadyExistError extends AlreadyExistError {
   }
 }
 
-export { NoteNotFoundError, NoteAlreadyExistError, ColumnNotFoundError };
+export { ColumnNotFoundError, NoteAlreadyExistError, NoteNotFoundError };

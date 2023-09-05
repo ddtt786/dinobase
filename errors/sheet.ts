@@ -1,5 +1,5 @@
-import { Sheet } from "../model/sheet.ts";
-import { ConflictError, NotFoundError } from "./index.ts";
+import { Sheet } from "@/model/sheet.ts";
+import { ConflictError, NotFoundError } from "@/errors/index.ts";
 
 class SheetNotFoundError extends NotFoundError {
   constructor(uuid: string) {
@@ -26,4 +26,4 @@ class SheetConflictError extends ConflictError {
   }
 }
 
-export { SheetNotFoundError, SheetCreationError, SheetConflictError };
+export { SheetConflictError, SheetCreationError, SheetNotFoundError };
