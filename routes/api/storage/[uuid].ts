@@ -5,7 +5,6 @@ import { Role } from "@/model/rule.ts";
 import { validateSheet } from "@/lib/validation.ts";
 import { removeFile } from "@/db/storage.ts";
 import { ValidateError } from "@/errors/validate.ts";
-import { ColumnNotFoundError } from "@/errors/note.ts";
 import { SheetNotFoundError } from "@/errors/sheet.ts";
 
 export const handler: Handlers<Data, WithSession> = {
