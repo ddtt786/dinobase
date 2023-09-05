@@ -1,6 +1,6 @@
-import { validateSheet } from "@/lib/validation.ts";
-import { createSheet } from "@/db/sheet.ts";
+import { createSheet, deleteSheet, getSheet } from "@/db/sheet.ts";
 import { parse } from "path";
+import { StorageFile } from "@/model/storage.ts";
 
 async function uploadFile(
   filename: string,
@@ -10,26 +10,23 @@ async function uploadFile(
   const uuid = crypto.randomUUID();
   const { name, ext } = parse(filename);
   const path = `./storage/${uuid}${ext}`;
-  await Deno.writeFile(path, data);
-  await validateSheet(
-    {
-      action: "create",
-      note: "storage",
-      role: "admin",
-    },
-    {
-      name,
-      ext,
-      path: uuid,
-      owner,
-    },
-  );
-  return await createSheet("storage", {
+  const fileUUID = await createSheet("storage", {
     name,
     ext,
     path: uuid,
     owner,
   });
+  await Deno.writeFile(path, data);
+  return fileUUID;
 }
 
-export { uploadFile };
+async function removeFile(uuid: string) {
+  const { path, ext } = await getSheet(
+    "storage",
+    uuid,
+  ) as unknown as StorageFile;
+  await deleteSheet("storage", uuid);
+  await Deno.remove(`./storage/${path}${ext}`);
+}
+
+export { removeFile, uploadFile };

@@ -5,7 +5,7 @@ export const handler: Handlers<Data, WithSession> = {
   async POST(_req, ctx) {
     const { session } = ctx.state;
     session.clear();
-    return new Response("", {
+    return new Response(null, {
       status: 204,
     });
   },

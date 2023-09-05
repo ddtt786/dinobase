@@ -68,7 +68,7 @@ export const handler: Handlers<Data, WithSession> = {
         });
       }
       console.log(error);
-      return new Response("", {
+      return new Response(null, {
         status: 500,
       });
     }

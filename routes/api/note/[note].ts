@@ -108,7 +108,7 @@ export const handler: Handlers<Data, WithSession> = {
         body.columns as Columns,
         body.rule,
       );
-      return new Response("", {
+      return new Response(null, {
         status: 200,
       });
     } catch (error) {
@@ -145,7 +145,7 @@ export const handler: Handlers<Data, WithSession> = {
         action: "delete",
       });
       await deleteNote(ctx.params.note);
-      return new Response("", {
+      return new Response(null, {
         status: 200,
       });
     } catch (error) {
@@ -160,7 +160,7 @@ export const handler: Handlers<Data, WithSession> = {
         });
       }
       console.error(error);
-      return new Response("", {
+      return new Response(null, {
         status: 500,
       });
     }

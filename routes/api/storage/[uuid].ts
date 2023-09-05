@@ -1,48 +1,36 @@
 import { Handlers } from "$fresh/server.ts";
-import { Data, WithSession } from "@/lib/session.ts";
-import { z, ZodError } from "zod";
+import { WithSession } from "fresh_session";
+import { Data } from "@/lib/session.ts";
 import { Role } from "@/model/rule.ts";
 import { validateSheet } from "@/lib/validation.ts";
-import { createSheet } from "@/db/sheet.ts";
-import { NoteNotFoundError } from "@/errors/note.ts";
-import { NoRequiredFieldsError } from "@/errors/index.ts";
+import { removeFile } from "@/db/storage.ts";
 import { ValidateError } from "@/errors/validate.ts";
-
-const InsertSheet = z.record(
-  z.string(),
-  z.string().or(z.boolean()).or(z.number()),
-);
-
-type InsertSheet = z.infer<typeof InsertSheet>;
+import { ColumnNotFoundError } from "@/errors/note.ts";
+import { SheetNotFoundError } from "@/errors/sheet.ts";
 
 export const handler: Handlers<Data, WithSession> = {
-  async POST(_req, ctx) {
-    const body: InsertSheet = await _req.json();
+  async DELETE(_req, ctx) {
     const { session } = ctx.state;
 
-    const role: Role = session.get("role") ?? "guest";
     const uuid: string = session.get("user_uuid");
+    const role: Role = session.get("role") ?? "guest";
 
     try {
-      InsertSheet.parse(body);
       await validateSheet(
         {
-          note: ctx.params.note,
-          user: <string> uuid,
+          action: "delete",
+          note: "storage",
           role,
-          action: "create",
+          user: uuid,
+          target: ctx.params.uuid,
         },
-        body,
       );
-      const sheet = await createSheet(ctx.params.note, body);
-      return new Response(sheet, {
-        status: 200,
+      await removeFile(ctx.params.uuid);
+      return new Response(null, {
+        status: 204,
       });
     } catch (error) {
-      if (
-        error instanceof ZodError || error instanceof NoRequiredFieldsError ||
-        error instanceof NoteNotFoundError
-      ) {
+      if (error instanceof SheetNotFoundError) {
         return new Response(JSON.stringify(error), {
           status: 400,
         });

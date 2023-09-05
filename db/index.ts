@@ -40,17 +40,14 @@ async function init(account: CreateAccount): Promise<string | undefined> {
   await createNote("storage", {
     name: { type: "string" },
     ext: { type: "string" },
-    path: { type: "string", unique: true },
+    path: { type: "string" },
     owner: { type: "string", relation: ["account"], optional: true },
     created_at: { type: "timestamp" },
   }, {
-    create_rule: {
-      permission: "admin",
+    read_rule: {
+      auth: false,
     },
     update_rule: {
-      permission: "admin",
-    },
-    delete_rule: {
       permission: "admin",
     },
   });

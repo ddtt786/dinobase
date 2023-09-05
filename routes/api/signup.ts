@@ -22,7 +22,7 @@ export const handler: Handlers<Data, WithSession> = {
         password: body.password,
         role: "user",
       });
-      return new Response("", {
+      return new Response(null, {
         status: 200,
       });
     } catch (error) {
@@ -37,7 +37,7 @@ export const handler: Handlers<Data, WithSession> = {
         });
       }
       console.error(error);
-      return new Response("", {
+      return new Response(null, {
         status: 500,
       });
     }

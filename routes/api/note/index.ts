@@ -64,7 +64,7 @@ export const handler: Handlers<Data, WithSession> = {
         body.columns as Columns,
         body.rule,
       );
-      return new Response("", { status: 200 });
+      return new Response(null, { status: 200 });
     } catch (error) {
       if (error instanceof ZodError) {
         return new Response(JSON.stringify(error), { status: 400 });
@@ -76,7 +76,7 @@ export const handler: Handlers<Data, WithSession> = {
         return new Response(JSON.stringify(error.data), { status: 400 });
       }
       console.log(error);
-      return new Response("", {
+      return new Response(null, {
         status: 500,
       });
     }

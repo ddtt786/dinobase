@@ -77,7 +77,7 @@ export const handler: Handlers<Data, WithSession> = {
         body,
       );
       await changeSheetData(ctx.params.note, ctx.params.uuid, body);
-      return new Response("", {
+      return new Response(null, {
         status: 200,
       });
     } catch (error) {
@@ -101,7 +101,7 @@ export const handler: Handlers<Data, WithSession> = {
         });
       }
       console.error(error);
-      return new Response("", {
+      return new Response(null, {
         status: 500,
       });
     }
@@ -121,7 +121,7 @@ export const handler: Handlers<Data, WithSession> = {
         target: ctx.params.uuid,
       });
       await deleteSheet(ctx.params.note, ctx.params.uuid);
-      return new Response("", {
+      return new Response(null, {
         status: 200,
       });
     } catch (error) {
@@ -144,7 +144,7 @@ export const handler: Handlers<Data, WithSession> = {
         });
       }
       console.error(error);
-      return new Response("", {
+      return new Response(null, {
         status: 500,
       });
     }

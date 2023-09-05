@@ -9,7 +9,7 @@
 _fresh/
 
 #db
-storage
+storage/*
 
 data.db
 data.db-shm

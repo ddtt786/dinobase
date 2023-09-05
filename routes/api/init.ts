@@ -22,11 +22,11 @@ export const handler: Handlers = {
           role: "admin",
         })) == undefined
       ) {
-        return new Response("", {
+        return new Response(null, {
           status: 400,
         });
       }
-      return new Response("", {
+      return new Response(null, {
         status: 200,
       });
     } catch (error) {
@@ -36,7 +36,7 @@ export const handler: Handlers = {
         });
       }
       console.log(error);
-      return new Response("", {
+      return new Response(null, {
         status: 500,
       });
     }
