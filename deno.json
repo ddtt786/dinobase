@@ -5,14 +5,16 @@
     "start": "deno run -A --unstable --watch=static/,routes/ dev.ts",
     "build": "deno run -A --unstable dev.ts build",
     "preview": "deno run -A --unstable main.ts",
-    "update": "deno run -A --unstable -r https://fresh.deno.dev/update ."
+    "update": "deno run -A --unstable -r https://fresh.deno.dev/update .",
+    "production": "DENO_DEPLOYMENT_ID=\"$(git rev-parse HEAD)\" deno run -A --unstable main.ts"
   },
   "lint": {
     "rules": {
       "tags": [
         "fresh",
         "recommended"
-      ]
+      ],
+      "exclude": ["no-explicit-any"]
     },
     "exclude": [
       "_fresh"

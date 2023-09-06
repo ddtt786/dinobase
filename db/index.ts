@@ -44,10 +44,17 @@ async function init(account: CreateAccount): Promise<string | undefined> {
     owner: { type: "string", relation: ["account"], optional: true },
     created_at: { type: "timestamp" },
   }, {
+    create_rule: {
+      permission: "guest",
+    },
     read_rule: {
       auth: false,
+      permission: "guest",
     },
     update_rule: {
+      permission: "admin",
+    },
+    delete_rule: {
       permission: "admin",
     },
   });
@@ -55,4 +62,4 @@ async function init(account: CreateAccount): Promise<string | undefined> {
   return await createAccount(account, "admin");
 }
 
-export { init };
+export { getVariable, init };

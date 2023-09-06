@@ -5,6 +5,7 @@ import { Account } from "@/model/account.ts";
 import { Role } from "@/model/rule.ts";
 import { createSheet, getSheet, search } from "@/db/sheet.ts";
 import { hash } from "bcrypt";
+import { SheetNotFoundError } from "@/errors/sheet.ts";
 
 interface CreateAccount {
   username: string;
@@ -21,7 +22,7 @@ async function createAccount(
     {
       note: "account",
       action: "create",
-      role: role ? account.role : "user",
+      role: "admin",
     },
     {
       username: account.username,
@@ -56,6 +57,9 @@ async function authSignIn(
   const { data } = await search("account", "username", {
     value: username,
   });
+  if (data.length == 0) {
+    throw new ValidateError({ code: "forbidden" });
+  }
   const account: Account = await getSheet(
     "account",
     data[0],

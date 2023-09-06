@@ -8,9 +8,12 @@
 # Fresh build directory
 _fresh/
 
-#db
+# DB
 storage/*
 
 data.db
 data.db-shm
 data.db-wal
+
+# tailwind
+tailwind.config.ts

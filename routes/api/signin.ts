@@ -3,6 +3,7 @@ import { Data, WithSession } from "@/lib/session.ts";
 import { z, ZodError } from "zod";
 import { authSignIn } from "@/db/account.ts";
 import { ValidateError } from "@/errors/validate.ts";
+import { SheetNotFoundError } from "@/errors/sheet.ts";
 
 const Auth = z.object({
   username: z.string().min(3).max(24),
@@ -27,6 +28,11 @@ export const handler: Handlers<Data, WithSession> = {
       });
     } catch (error) {
       if (error instanceof ZodError) {
+        return new Response(JSON.stringify(error), {
+          status: 400,
+        });
+      }
+      if (error instanceof SheetNotFoundError) {
         return new Response(JSON.stringify(error), {
           status: 400,
         });
