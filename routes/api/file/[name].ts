@@ -13,8 +13,8 @@ export const handler: Handlers = {
       return new Response(await Deno.readFile(`./storage/${path}${ext}`));
     } catch (error) {
       if (ColumnNotFoundError) {
-        return new Response(JSON.stringify(error), {
-          status: 400,
+        return new Response(null, {
+          status: 404,
         });
       }
       console.log(error);
