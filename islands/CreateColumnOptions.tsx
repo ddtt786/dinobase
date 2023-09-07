@@ -1,77 +1,104 @@
-import { Column } from "@/model/column.ts";
+import { useSignal } from "@preact/signals";
+import { Columns, ColumnType } from "@/model/column.ts";
+import { ColumnInfo } from "@/islands/CreateColumnList.tsx";
 
-export default function ColumnOptions(
-  props: { note: string; name: string; column: Column },
+export default function CreateColumnOptions(
+  props: {
+    index: number;
+    column: ColumnInfo;
+    changeList: (i: number, c: ColumnInfo | number) => void;
+  },
 ) {
+  const name = useSignal(props.column.name);
+  const columnType = useSignal(props.column.type);
+  const relation = useSignal<[string, string?] | undefined>(
+    props.column.relation,
+  );
+  const unique = useSignal(props.column.unique);
+  const min = useSignal<number | undefined>(props.column.min);
+  const max = useSignal<number | undefined>(props.column.max);
+  const lock = useSignal(props.column.lock);
+  const optional = useSignal(props.column.optional);
+
   const change = (e: Event) => {
-    const changeValue = (
-      n: string,
-      v: string[] | string | number | boolean | null,
-    ) => {
-      {
-        const target = e.target as HTMLInputElement;
-        target.disabled = true;
-        fetch(`/api/note/${props.note}`, {
-          method: "PATCH",
-          body: JSON.stringify({
-            columns: {
-              [props.name]: {
-                type: props.column.type,
-                [n]: v,
-              },
-            },
-          }),
-        }).then((d) => {
-          target.disabled = false;
-          if (!d.ok) {
-            target.value = (props.column as any)[n]?.toString() ?? "";
-          }
-        });
-      }
-    };
     switch ((e.target as HTMLElement).id) {
+      case "columnname":
+        {
+          const target = e.target as HTMLInputElement;
+          name.value = target.value;
+        }
+        break;
+      case "type":
+        {
+          const target = e.target as HTMLSelectElement;
+          /**@ts-ignore */
+          columnType.value = target.value;
+        }
+        break;
       case "relation":
         {
           const target = e.target as HTMLInputElement;
-          target.disabled = true;
-          changeValue("relation", target?.value.split(","));
-        }
-        break;
-      case "min":
-        {
-          const target = e.target as HTMLInputElement;
-          changeValue("min", target.value ? Number(target.value) : null);
-        }
-        break;
-      case "max":
-        {
-          const target = e.target as HTMLInputElement;
-          changeValue("max", target.value ? Number(target.value) : null);
+          /**@ts-ignore */
+          relation.value = target.value.split(",");
         }
         break;
       case "unique":
         {
           const target = e.target as HTMLSelectElement;
-          changeValue("unique", target.value == "true");
+          unique.value = target.value == "true";
+        }
+        break;
+      case "min":
+        {
+          const target = e.target as HTMLInputElement;
+          min.value = target.value ? Number(target.value) : undefined;
+        }
+        break;
+      case "max":
+        {
+          const target = e.target as HTMLInputElement;
+          max.value = target.value ? Number(target.value) : undefined;
         }
         break;
       case "lock":
         {
           const target = e.target as HTMLSelectElement;
-          changeValue("lock", target.value == "true");
+          lock.value = target.value == "true";
         }
         break;
       case "optional":
         {
           const target = e.target as HTMLSelectElement;
-          changeValue("optional", target.value == "true");
+          optional.value = target.value == "true";
         }
         break;
     }
+    props.changeList(props.index, {
+      name: name.value,
+      type: columnType.value as ColumnType,
+      relation: relation.value,
+      unique: unique.value,
+      min: min.value,
+      max: max.value,
+      optional: optional.value,
+      lock: lock.value,
+    });
   };
   return (
     <>
       <div class="field-body is-grouped box">
+        <div class="field">
+          <p class="control">
+            <input
+              id="columnname"
+              class="input"
+              type="text"
+              placeholder="name"
+              onChange={change}
+              value={props.column.name}
+            />
+          </p>
+        </div>
         <div class="field has-addons">
           <p class="control">
             <a class="button is-static">
@@ -80,8 +107,13 @@ export default function ColumnOptions(
           </p>
           <p class="control">
             <div class="select">
-              <select>
-                <option>{props.column.type}</option>
+              <select id="type" onChange={change}>
+                <option value="string" selected>string</option>
+                <option value="number">number</option>
+                <option value="boolean">boolean</option>
+                <option value="file">file</option>
+                <option value="timestamp">timestamp</option>
+                <option value="auth">auth</option>
               </select>
             </div>
           </p>
@@ -98,8 +130,6 @@ export default function ColumnOptions(
               class="input"
               type="text"
               placeholder="relation"
-              value={props.column.relation?.toString()}
-              disabled={props.column.type == "file"}
               onChange={change}
             />
           </p>
@@ -107,11 +137,6 @@ export default function ColumnOptions(
         <div class="field has-addons">
           <p class="control">
             <a class="button is-static">
-              {props.column.type == "number" ||
-                  props.column.type == "timestamp" ||
-                  props.column.type == "boolean"
-                ? "최소"
-                : "최소 길이"}
             </a>
           </p>
           <p class="control">
@@ -120,7 +145,6 @@ export default function ColumnOptions(
               class="input"
               type="number"
               placeholder="min"
-              value={props.column.min}
               onChange={change}
             />
           </p>
@@ -128,11 +152,6 @@ export default function ColumnOptions(
         <div class="field has-addons">
           <p class="control">
             <a class="button is-static">
-              {props.column.type == "number" ||
-                  props.column.type == "timestamp" ||
-                  props.column.type == "boolean"
-                ? "최대"
-                : "최대 길이"}
             </a>
           </p>
           <p class="control">
@@ -141,7 +160,6 @@ export default function ColumnOptions(
               class="input"
               type="number"
               placeholder="max"
-              value={props.column.max}
               onChange={change}
             />
           </p>
@@ -153,12 +171,12 @@ export default function ColumnOptions(
             </a>
           </p>
           <p class="control">
-            <div class="select" onChange={change}>
-              <select id="unique">
-                <option value="true" selected={props.column.unique}>
+            <div class="select">
+              <select id="unique" onChange={change}>
+                <option value="true">
                   true
                 </option>
-                <option value="false" selected={!props.column.unique}>
+                <option value="false" selected>
                   false
                 </option>
               </select>
@@ -175,8 +193,8 @@ export default function ColumnOptions(
           <p class="control">
             <div class="select">
               <select id="lock" onChange={change}>
-                <option value="true" selected={props.column.lock}>true</option>
-                <option value="false" selected={!props.column.lock}>
+                <option value="true">true</option>
+                <option value="false" selected>
                   false
                 </option>
               </select>
@@ -192,16 +210,24 @@ export default function ColumnOptions(
           <p class="control">
             <div class="select">
               <select id="optional" onChange={change}>
-                <option value="true" selected={props.column.optional}>
+                <option value="true">
                   true
                 </option>
-                <option value="false" selected={!props.column.optional}>
+                <option value="false" selected>
                   false
                 </option>
               </select>
             </div>
           </p>
         </div>
+        <p
+          class="control"
+          onClick={() => {
+            props.changeList(props.index, 0);
+          }}
+        >
+          <button class="button is-danger is-outlined">삭제</button>
+        </p>
       </div>
     </>
   );

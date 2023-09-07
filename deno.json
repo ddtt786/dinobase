@@ -14,7 +14,10 @@
         "fresh",
         "recommended"
       ],
-      "exclude": ["no-explicit-any", "no-unused-vars"]
+      "exclude": [
+        "no-explicit-any",
+        "no-unused-vars"
+      ]
     },
     "exclude": [
       "_fresh"

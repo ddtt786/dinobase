@@ -11,7 +11,7 @@ export default function Layout({ Component }: AppProps) {
           </a>
         </div>
         <div class="navbar-end">
-          <NavEnd></NavEnd>
+          <NavEnd />
         </div>
       </nav>
       <div class="m-3">

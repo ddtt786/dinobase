@@ -27,14 +27,17 @@ import * as $21 from "./routes/signin.tsx";
 import * as $22 from "./routes/signup.tsx";
 import * as $$0 from "./islands/ColumnList.tsx";
 import * as $$1 from "./islands/ColumnOptions.tsx";
-import * as $$2 from "./islands/CreateNoteButton.tsx";
-import * as $$3 from "./islands/DeleteNote.tsx";
-import * as $$4 from "./islands/NavEnd.tsx";
-import * as $$5 from "./islands/NoteBlock.tsx";
-import * as $$6 from "./islands/RuleList.tsx";
-import * as $$7 from "./islands/RuleOptions.tsx";
-import * as $$8 from "./islands/SignInForm.tsx";
-import * as $$9 from "./islands/SignUpForm.tsx";
+import * as $$2 from "./islands/CreateColumnList.tsx";
+import * as $$3 from "./islands/CreateColumnOptions.tsx";
+import * as $$4 from "./islands/CreateNoteButton.tsx";
+import * as $$5 from "./islands/CreateNoteForm.tsx";
+import * as $$6 from "./islands/DeleteNote.tsx";
+import * as $$7 from "./islands/NavEnd.tsx";
+import * as $$8 from "./islands/NoteBlock.tsx";
+import * as $$9 from "./islands/RuleList.tsx";
+import * as $$10 from "./islands/RuleOptions.tsx";
+import * as $$11 from "./islands/SignInForm.tsx";
+import * as $$12 from "./islands/SignUpForm.tsx";
 
 const manifest = {
   routes: {
@@ -65,14 +68,17 @@ const manifest = {
   islands: {
     "./islands/ColumnList.tsx": $$0,
     "./islands/ColumnOptions.tsx": $$1,
-    "./islands/CreateNoteButton.tsx": $$2,
-    "./islands/DeleteNote.tsx": $$3,
-    "./islands/NavEnd.tsx": $$4,
-    "./islands/NoteBlock.tsx": $$5,
-    "./islands/RuleList.tsx": $$6,
-    "./islands/RuleOptions.tsx": $$7,
-    "./islands/SignInForm.tsx": $$8,
-    "./islands/SignUpForm.tsx": $$9,
+    "./islands/CreateColumnList.tsx": $$2,
+    "./islands/CreateColumnOptions.tsx": $$3,
+    "./islands/CreateNoteButton.tsx": $$4,
+    "./islands/CreateNoteForm.tsx": $$5,
+    "./islands/DeleteNote.tsx": $$6,
+    "./islands/NavEnd.tsx": $$7,
+    "./islands/NoteBlock.tsx": $$8,
+    "./islands/RuleList.tsx": $$9,
+    "./islands/RuleOptions.tsx": $$10,
+    "./islands/SignInForm.tsx": $$11,
+    "./islands/SignUpForm.tsx": $$12,
   },
   baseUrl: import.meta.url,
 };

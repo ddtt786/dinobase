@@ -4,8 +4,8 @@ import { useCallback } from "preact/hooks";
 export default function SignInForm() {
   const username = useSignal("");
   const password = useSignal("");
-  const submit = (event: Event) => {
-    event.preventDefault();
+  const submit = (e: Event) => {
+    e.preventDefault();
     fetch("/api/signin", {
       method: "POST",
       body: JSON.stringify({

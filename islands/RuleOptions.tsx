@@ -3,13 +3,13 @@ import { Rule } from "@/model/rule.ts";
 export default function RuleOptions(
   props: { note: string; name: string; rule?: Rule },
 ) {
-  const change = (event: Event) => {
+  const change = (e: Event) => {
     const changeValue = (
       n: string,
       v: string | boolean,
     ) => {
       {
-        const target = event.target as HTMLInputElement;
+        const target = e.target as HTMLInputElement;
         target.disabled = true;
         fetch(`/api/note/${props.note}`, {
           method: "PATCH",
@@ -29,19 +29,19 @@ export default function RuleOptions(
         });
       }
     };
-    switch ((event.target as HTMLElement).id) {
+    switch ((e.target as HTMLElement).id) {
       case "permission":
         {
-          const target = event.target as HTMLSelectElement;
+          const target = e.target as HTMLSelectElement;
           target.disabled = true;
           changeValue("permission", target.value);
         }
         break;
       case "auth":
         {
-          const target = event.target as HTMLSelectElement;
+          const target = e.target as HTMLSelectElement;
           target.disabled = true;
-          changeValue("auth", target.value == "true" ? true : false);
+          changeValue("auth", target.value == "true");
         }
         break;
     }

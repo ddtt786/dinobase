@@ -1,8 +1,7 @@
 import NoteBlock from "@/islands/NoteBlock.tsx";
 import { Note as _Note } from "@/model/note.ts";
-import { getColumns, getNoteList } from "@/db/note.ts";
-import { Handlers, PageProps, RouteContext } from "$fresh/server.ts";
-import { Data, WithSession } from "@/lib/session.ts";
+import { getNoteList } from "@/db/note.ts";
+import { Handlers, PageProps } from "$fresh/server.ts";
 import { getSheet } from "@/db/sheet.ts";
 import { Session } from "fresh_session";
 import CreateNoteButton from "@/islands/CreateNoteButton.tsx";

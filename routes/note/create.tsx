@@ -1,6 +1,7 @@
 import { Handlers } from "$fresh/server.ts";
 import { Session } from "fresh_session";
 import { getSheet } from "@/db/sheet.ts";
+import CreateNoteForm from "@/islands/CreateNoteForm.tsx";
 
 export const handler: Handlers = {
   async GET(_req, ctx) {
@@ -24,6 +25,7 @@ export const handler: Handlers = {
 export default function CreateNotePage() {
   return (
     <>
+      <CreateNoteForm />
     </>
   );
 }
