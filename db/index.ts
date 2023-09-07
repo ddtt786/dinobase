@@ -17,7 +17,7 @@ async function init(account: CreateAccount): Promise<string | undefined> {
   await setVariable("init", true);
 
   await createNote("account", {
-    username: { type: "string", unique: true },
+    username: { type: "string", unique: true, lock: true },
     password: { type: "string" },
     profile_image: { type: "file", optional: true },
     role: { type: "string" },

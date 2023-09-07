@@ -7,7 +7,7 @@ export default function NavEnd() {
       method: "POST",
     });
     localStorage.removeItem("userUUID");
-    location.reload();
+    location.pathname = "/signin";
   };
   return (
     <>

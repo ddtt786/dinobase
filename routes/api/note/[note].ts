@@ -19,7 +19,7 @@ const rule = z.object({
     z.literal("admin"),
     z.literal("user"),
     z.literal("guest"),
-  ]),
+  ]).optional(),
   auth: z.boolean().optional(),
 });
 
@@ -28,20 +28,20 @@ const NewNoteData = z.object({
     z.string(),
     z.object({
       type: z.string().optional(),
-      relation: z.array(z.string()).max(2).optional(),
-      unique: z.boolean().optional(),
-      min: z.number().optional(),
-      max: z.number().optional(),
-      lock: z.boolean().optional(),
-      optional: z.boolean().optional(),
+      relation: z.array(z.string()).max(2).optional().nullable(),
+      unique: z.boolean().optional().nullable(),
+      min: z.number().optional().nullable(),
+      max: z.number().optional().nullable(),
+      lock: z.boolean().optional().nullable(),
+      optional: z.boolean().optional().nullable(),
     }),
   ),
   rule: z
     .object({
-      create_rule: rule,
-      update_rule: rule,
-      read_rule: rule,
-      delete_rule: rule,
+      create_rule: z.optional(rule),
+      update_rule: z.optional(rule),
+      read_rule: z.optional(rule),
+      delete_rule: z.optional(rule),
     })
     .optional(),
 });

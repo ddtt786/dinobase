@@ -21,12 +21,21 @@ import * as $15 from "./routes/api/storage/[uuid].ts";
 import * as $16 from "./routes/api/storage/upload.ts";
 import * as $17 from "./routes/greet/[name].tsx";
 import * as $18 from "./routes/index.ts";
-import * as $19 from "./routes/note.tsx";
-import * as $20 from "./routes/signin.tsx";
-import * as $21 from "./routes/signup.tsx";
-import * as $$0 from "./islands/NavEnd.tsx";
-import * as $$1 from "./islands/SignInForm.tsx";
-import * as $$2 from "./islands/SignUpForm.tsx";
+import * as $19 from "./routes/note/[note].tsx";
+import * as $20 from "./routes/note/create.tsx";
+import * as $21 from "./routes/note/index.tsx";
+import * as $22 from "./routes/signin.tsx";
+import * as $23 from "./routes/signup.tsx";
+import * as $$0 from "./islands/ColumnList.tsx";
+import * as $$1 from "./islands/ColumnOptions.tsx";
+import * as $$2 from "./islands/CreateNoteButton.tsx";
+import * as $$3 from "./islands/DeleteNote.tsx";
+import * as $$4 from "./islands/NavEnd.tsx";
+import * as $$5 from "./islands/NoteBlock.tsx";
+import * as $$6 from "./islands/RuleList.tsx";
+import * as $$7 from "./islands/RuleOptions.tsx";
+import * as $$8 from "./islands/SignInForm.tsx";
+import * as $$9 from "./islands/SignUpForm.tsx";
 
 const manifest = {
   routes: {
@@ -49,14 +58,23 @@ const manifest = {
     "./routes/api/storage/upload.ts": $16,
     "./routes/greet/[name].tsx": $17,
     "./routes/index.ts": $18,
-    "./routes/note.tsx": $19,
-    "./routes/signin.tsx": $20,
-    "./routes/signup.tsx": $21,
+    "./routes/note/[note].tsx": $19,
+    "./routes/note/create.tsx": $20,
+    "./routes/note/index.tsx": $21,
+    "./routes/signin.tsx": $22,
+    "./routes/signup.tsx": $23,
   },
   islands: {
-    "./islands/NavEnd.tsx": $$0,
-    "./islands/SignInForm.tsx": $$1,
-    "./islands/SignUpForm.tsx": $$2,
+    "./islands/ColumnList.tsx": $$0,
+    "./islands/ColumnOptions.tsx": $$1,
+    "./islands/CreateNoteButton.tsx": $$2,
+    "./islands/DeleteNote.tsx": $$3,
+    "./islands/NavEnd.tsx": $$4,
+    "./islands/NoteBlock.tsx": $$5,
+    "./islands/RuleList.tsx": $$6,
+    "./islands/RuleOptions.tsx": $$7,
+    "./islands/SignInForm.tsx": $$8,
+    "./islands/SignUpForm.tsx": $$9,
   },
   baseUrl: import.meta.url,
 };

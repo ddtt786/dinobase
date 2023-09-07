@@ -1,6 +1,6 @@
 import SignUpForm from "@/islands/SignUpForm.tsx";
 
-export default function SignUp() {
+export default function SignUpPage() {
   return (
     <div>
       <SignUpForm></SignUpForm>

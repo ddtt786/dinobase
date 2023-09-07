@@ -4,7 +4,7 @@ import { useCallback } from "preact/hooks";
 export default function SignInForm() {
   const username = useSignal("");
   const password = useSignal("");
-  const submit = async (event: Event) => {
+  const submit = (event: Event) => {
     event.preventDefault();
     fetch("/api/signin", {
       method: "POST",
@@ -16,15 +16,19 @@ export default function SignInForm() {
       if (d.ok) {
         localStorage.userUUID = await d.text();
         location.pathname = "/note";
+      } else {
+        if (d.status == 500) {
+          alert("init을 먼저 해야 합니다.");
+          location.pathname = "/signup";
+        } else {
+          alert("아이디 혹은 비밀번호가 잘못되었습니다.");
+        }
       }
-    }).catch((e) => {
-      console.log(e);
-      alert("아이디 혹은 비밀번호가 잘못되었습니다.");
     });
   };
 
   return (
-    <div class="m-3" style={{ width: "500px" }}>
+    <div class="block" style={{ width: "500px" }}>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label class="label">아이디</label>

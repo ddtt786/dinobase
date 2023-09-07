@@ -65,8 +65,8 @@ async function validateNote(expl: Expl, columns?: Columns) {
         code: "conflict",
       });
     }
-    // deno-lint-ignore no-unused-vars
     const data = columns ? columns[key] : target[key];
+
     if ((expl.action == "delete" || expl.action == "update") && !columns[key]) {
       continue;
     }
@@ -184,7 +184,7 @@ async function validateSheet(expl: Expl, sheet?: Sheet) {
     if (!optional && !data && type != "timestamp") {
       throw new NoRequiredFieldsError([key]);
     }
-    if (lock && data) {
+    if (lock && data && expl.action == "update") {
       throw new ValidateError({
         key,
         code: "conflict",

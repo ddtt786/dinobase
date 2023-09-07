@@ -60,12 +60,27 @@ async function changeNote(
 
   for (const key in columns) {
     const column = columns[key];
+    const original = (await kv.get(["column", name, key])).value as Column;
+    Object.entries(column).forEach(([key, value]) => {
+      if (value === null) {
+        /**@ts-ignore */
+        delete original[key];
+        /**@ts-ignore */
+        delete column[key];
+      }
+    });
     if (column.type == "file") {
       column.relation = ["storage"];
-      await kv.set(["column", name, key] as ColumnSelector, column);
+      await kv.set(
+        ["column", name, key] as ColumnSelector,
+        deepmerge(original, column),
+      );
       continue;
     }
-    await kv.set(["column", name, key] as ColumnSelector, column);
+    await kv.set(
+      ["column", name, key] as ColumnSelector,
+      deepmerge(original, column),
+    );
   }
 }
 

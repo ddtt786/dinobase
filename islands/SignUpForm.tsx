@@ -15,14 +15,18 @@ export default function SignUpForm() {
         localStorage.userUUID = await d.text();
         location.pathname = "/signin";
       } else {
-        alert("이미 init 되었습니다.");
-        location.pathname = "/signin";
+        if (d.status == 500) {
+          alert("무언가 잘못되었습니다.");
+        } else {
+          alert("이미 init 되었습니다.");
+          location.pathname = "/signin";
+        }
       }
     });
   };
 
   return (
-    <div class="m-3" style={{ width: "500px" }}>
+    <div class="block" style={{ width: "500px" }}>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label class="label">아이디</label>
@@ -72,7 +76,7 @@ export default function SignUpForm() {
               class="button is-link"
               onClick={submit}
             >
-              관리자 가입
+              관리자 계정 생성 & 초기화
             </button>
           </div>
         </div>

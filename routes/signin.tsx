@@ -1,6 +1,6 @@
 import SignInForm from "@/islands/SignInForm.tsx";
 
-export default function SignIn() {
+export default function SignInPage() {
   return (
     <div>
       <SignInForm></SignInForm>
