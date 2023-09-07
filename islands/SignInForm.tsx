@@ -14,7 +14,7 @@ export default function SignInForm() {
       }),
     }).then(async (d) => {
       if (d.ok) {
-        localStorage.userUUID = await d.text();
+        window.localStorage.userUUID = await d.text();
         location.pathname = "/note";
       } else {
         if (d.status == 500) {

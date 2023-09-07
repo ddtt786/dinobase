@@ -12,7 +12,7 @@ export default function SignUpForm() {
       }),
     }).then(async (d) => {
       if (d.ok) {
-        localStorage.userUUID = await d.text();
+        window.localStorage.userUUID = await d.text();
         location.pathname = "/signin";
       } else {
         if (d.status == 500) {
