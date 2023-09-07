@@ -7,6 +7,7 @@ dinobase는 deno kv와 fresh를 사용하는 간단한 백엔드 소프트웨어
 ```bash
 git clone https://github.com/ddtt786/dinobase.git
 cd dinobase
+deno task build
 deno task production
 ```
 
