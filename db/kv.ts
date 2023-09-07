@@ -1,3 +1,3 @@
-const kv = await Deno.openKv("./data.db");
+const kv = await Deno.openKv();
 
 export { kv };
