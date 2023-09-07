@@ -110,7 +110,7 @@ sheet가 없어지기 때문에 주의해야 합니다.
 
 ## sdk 사용
 
-denobase 설정을 마쳤다면 sdk를 사용할 수 있습니다. (자세한 사용법은
+dinobase 설정을 마쳤다면 sdk를 사용할 수 있습니다. (자세한 사용법은
 [여기](https://github.com/ddtt786/dinobasesdk)서 확인할 수 있습니다.)
 
 npm (또는 esm)으로 설치합니다.
