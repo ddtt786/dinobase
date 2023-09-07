@@ -137,6 +137,7 @@ export default function CreateColumnOptions(
         <div class="field has-addons">
           <p class="control">
             <a class="button is-static">
+              min
             </a>
           </p>
           <p class="control">
@@ -152,6 +153,7 @@ export default function CreateColumnOptions(
         <div class="field has-addons">
           <p class="control">
             <a class="button is-static">
+              max
             </a>
           </p>
           <p class="control">
