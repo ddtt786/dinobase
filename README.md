@@ -13,8 +13,11 @@ deno task production
 ## deno deploy에서 사용
 
 dinobase github repository를 포크하고 사용하면 됩니다.
-![deno deploy](images/deno_deploy.png) deno kv 사용을 신청해서 deno kv를 사용할
-수 있는 상태여야 하며, file storage를 이용할 수 없습니다.
+
+![deno deploy](images/deno_deploy.png)
+
+deno kv 사용을 신청해서 deno kv를 사용할 수 있는 상태여야 하며, file storage를
+이용할 수 없습니다.
 
 ## 개념
 
@@ -37,19 +40,27 @@ dinobase github repository를 포크하고 사용하면 됩니다.
 
 ## 관리자 패널
 
-![dinobase admin](images/dinobase_admin.png) dinobase를 init 하기 전에는
-dinobase를 사용할 수 없습니다. `host:3000/signup` 으로 접속해 관리자 계정을
-생성하고 초기화하세요.
+![dinobase admin](images/dinobase_admin.png)
 
-![login](images/login.png) 초기화 후 로그인 하시면 됩니다. (초기화 후 리다이렉트
-되지 않는 경우 `host:3000/signin` 으로 이동하세요.)
+dinobase를 init 하기 전에는 dinobase를 사용할 수 없습니다. `host:3000/signup`
+으로 접속해 관리자 계정을 생성하고 초기화하세요.
 
-![note list](images/note_list.png) `추가` 버튼을 클릭하여 노트를 추가할 수
-있습니다.
+![login](images/login.png)
 
-![create note](images/create_note.png) `추가` 버튼을 눌러 컬럼을 추가하세요.
+초기화 후 로그인 하시면 됩니다. (초기화 후 리다이렉트 되지 않는 경우
+`host:3000/signin` 으로 이동하세요.)
 
-![column options](images/column_options.png) 컬럼의 옵션은 다음과 같습니다.
+![note list](images/note_list.png)
+
+`추가` 버튼을 클릭하여 노트를 추가할 수 있습니다.
+
+![create note](images/create_note.png)
+
+`추가` 버튼을 눌러 컬럼을 추가하세요.
+
+![column options](images/column_options.png)
+
+컬럼의 옵션은 다음과 같습니다.
 
 - `column_name` 컬럼의 이름입니다.
 - `유형` 컬럼의 유형입니다. 사용할 수 있는 컬럼의 유형은 다음과 같습니다.
@@ -74,15 +85,22 @@ dinobase를 사용할 수 없습니다. `host:3000/signup` 으로 접속해 관�
 - `선택적` sheet를 추가할 때 이 column에 해당하는 값이 없어도 됨을 의미합니다.
 
 유저의 post를 저장하는 note를 만들고 싶다면 columns는 다음과 같을 것입니다.
-![post note](images/post_note.png) `노트 생성` 버튼을 눌러 노트를 생성합니다.
 
-![note list](images/note_list.2.png) 노트가 생성된 것을 확인할 수 있습니다.
-노트를 수정하려면 수정하고 싶은 노트를 클릭하세요.
+![post note](images/post_note.png)
 
-![rules](images/rules.png) 규칙을 수정할 수 있습니다.
+`노트 생성` 버튼을 눌러 노트를 생성합니다.
+
+![note list](images/note_list.2.png)
+
+노트가 생성된 것을 확인할 수 있습니다. 노트를 수정하려면 수정하고 싶은 노트를
+클릭하세요.
+
+![rules](images/rules.png)
+
+규칙을 수정할 수 있습니다.
 
 - 읽기 규칙에서 auth를 활성화하면 sheet를 추가한 사용자만 해당 sheet를 읽을 수
-  있기 때문에 비활성화 하는 것이 일반적입니다.
+  있기 때문에 비활성화 하는 것이 좋습니다..
 
 ![delete note](images/delete_note.png)
 
