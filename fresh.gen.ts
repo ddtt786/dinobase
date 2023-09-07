@@ -19,13 +19,12 @@ import * as $13 from "./routes/api/signin.ts";
 import * as $14 from "./routes/api/signup.ts";
 import * as $15 from "./routes/api/storage/[uuid].ts";
 import * as $16 from "./routes/api/storage/upload.ts";
-import * as $17 from "./routes/greet/[name].tsx";
-import * as $18 from "./routes/index.ts";
-import * as $19 from "./routes/note/[note].tsx";
-import * as $20 from "./routes/note/create.tsx";
-import * as $21 from "./routes/note/index.tsx";
-import * as $22 from "./routes/signin.tsx";
-import * as $23 from "./routes/signup.tsx";
+import * as $17 from "./routes/index.ts";
+import * as $18 from "./routes/note/[note].tsx";
+import * as $19 from "./routes/note/create.tsx";
+import * as $20 from "./routes/note/index.tsx";
+import * as $21 from "./routes/signin.tsx";
+import * as $22 from "./routes/signup.tsx";
 import * as $$0 from "./islands/ColumnList.tsx";
 import * as $$1 from "./islands/ColumnOptions.tsx";
 import * as $$2 from "./islands/CreateNoteButton.tsx";
@@ -56,13 +55,12 @@ const manifest = {
     "./routes/api/signup.ts": $14,
     "./routes/api/storage/[uuid].ts": $15,
     "./routes/api/storage/upload.ts": $16,
-    "./routes/greet/[name].tsx": $17,
-    "./routes/index.ts": $18,
-    "./routes/note/[note].tsx": $19,
-    "./routes/note/create.tsx": $20,
-    "./routes/note/index.tsx": $21,
-    "./routes/signin.tsx": $22,
-    "./routes/signup.tsx": $23,
+    "./routes/index.ts": $17,
+    "./routes/note/[note].tsx": $18,
+    "./routes/note/create.tsx": $19,
+    "./routes/note/index.tsx": $20,
+    "./routes/signin.tsx": $21,
+    "./routes/signup.tsx": $22,
   },
   islands: {
     "./islands/ColumnList.tsx": $$0,
